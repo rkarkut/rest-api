@@ -1,0 +1,19 @@
+get_items:
+    path: /api/items
+    controller: App\Controller\ItemsController::getItemsAction
+    methods:  [GET]
+
+create_item:
+    path: /api/items
+    controller: App\Controller\ItemsController::createItemAction
+    methods:  [POST]
+
+delete_item:
+    path: /api/items/{id}
+    controller: App\Controller\ItemsController::deleteItemAction
+    methods:  [DELETE]
+
+update_item:
+    path: /api/items/{id}
+    controller: App\Controller\ItemsController::updateItemAction
+    methods:  [PUT]
