@@ -16,4 +16,12 @@ class ItemsException extends \Exception
     {
         parent::__construct($message, $code);
     }
+
+    /**
+     * @return ItemsException
+     */
+    public static function createWhenItemNotFound(): ItemsException
+    {
+        return new self('Item not found', 1);
+    }
 }

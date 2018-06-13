@@ -1,0 +1,14 @@
+{
+    "name": "rest-client/client",
+    "description": "Rest client",
+    "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/rkarkut/rest-client-package.git"
+        }
+    ],
+    "require": {
+        "rkarkut/rest_client_package": "1.0.0"
+    }
+}

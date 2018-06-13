@@ -60,8 +60,9 @@ class ItemsService
 
     /**
      * @param CreateItemCommand $createItemCommand
+     * @return Item
      */
-    public function createItem(CreateItemCommand $createItemCommand): void
+    public function createItem(CreateItemCommand $createItemCommand): Item
     {
         $item = new Item(
             0,
@@ -70,6 +71,7 @@ class ItemsService
         );
 
         $this->itemsRepository->persistItem($item);
+        return $item;
     }
 
     /**
@@ -89,18 +91,21 @@ class ItemsService
     /**
      * @param int $id
      * @param CreateItemCommand $command
+     * @return Item
+     * @throws ItemsException
      */
-    public function updateItem(int $id, CreateItemCommand $command): void
+    public function updateItem(int $id, CreateItemCommand $command): Item
     {
         $item = $this->itemsRepository->find($id);
 
         if(empty($item)) {
-            return;
+            throw ItemsException::createWhenItemNotFound();
         }
 
         $item->setName($command->getName());
         $item->setAmount($command->getAmount());
 
         $this->itemsRepository->persistItem($item);
+        return $item;
     }
 }

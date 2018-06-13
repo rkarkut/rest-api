@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Presenter\ItemPresenter;
 use App\Controller\Presenter\ItemsPresenter;
 use App\Domain\Items\CreateItemCommand;
 use App\Domain\Items\ItemsException;
@@ -38,10 +39,12 @@ class ItemsController extends Controller
     public function createItemAction(Request $request, ItemsService $service): Response
     {
         try {
-            $service->createItem(
+            $item = $service->createItem(
                 CreateItemCommand::createFromRequest(json_decode($request->getContent(), true))
             );
-            return new Response('', Response::HTTP_CREATED);
+            $itemPresenter = new ItemPresenter($item);
+            return $this->json($itemPresenter->present(), Response::HTTP_CREATED);
+
         } catch (ItemsException $e) {
             return $this->json(
                 ['error' => 'Invalid params', 'details' => $e->getMessage()],
@@ -70,15 +73,16 @@ class ItemsController extends Controller
     public function updateItemAction(int $id, Request $request, ItemsService $service): Response
     {
         try {
-            $service->updateItem(
+            $item = $service->updateItem(
                 $id,
                 CreateItemCommand::createFromRequest(json_decode($request->getContent(), true))
             );
-            return new Response('', Response::HTTP_OK);
+            $itemPresenter = new ItemPresenter($item);
+            return $this->json($itemPresenter->present(), Response::HTTP_OK);
 
         } catch (ItemsException $e) {
             return $this->json(
-                ['error' => 'Invalid params', 'details' => $e->getMessage()],
+                ['error' => 'Incorrect request', 'details' => $e->getMessage()],
                 Response::HTTP_BAD_REQUEST
             );
         }
